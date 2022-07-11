@@ -1,10 +1,13 @@
 //---------- express pour bodyparser les requetes et responses json - middleware
 const express = require('express');
-
+//--------- j'appelle la fonction express
+const app = express();
+//--------- j'appelle l'extension mongoose
 const mongoose = require('mongoose');
+//--------- j'appelle le fichier des sauces
 const Sauces = require('./models/sauce.js');
-//---------- connexion à la base de données MongoDB - middleware
 
+//---------- connexion à la base de données MongoDB - middleware
 mongoose.connect('mongodb+srv://WebmisstressTest0:WebmisstressTest0@cluster0.ngbkf.mongodb.net/?retryWrites=true&w=majority', {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -19,9 +22,6 @@ app.post((req, res) => {
     });
 });
 
-//--------- j'appelle la fonction express
-const app = express();
-
 //---------- headers adapté pour les CORS 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -30,7 +30,7 @@ app.use((req, res, next) => {
     next();
 });
 
-//---------- réponse retourné par le serveur en CREATION / POST
+//---------- réponse retournée par le serveur en CREATION / POST
 app.post('/api/Sauces', (req, res, next) => {
     const sauce = new Sauces({
 
@@ -49,9 +49,9 @@ app.post('/api/Sauces', (req, res, next) => {
         message: 'objet crée)'
     });*/
 });
-/*
+
 //------------------------
-//Bout de code devenu inutile
+//Bout de code devenu inutile ?
 app.post((req, res, next) => {
     res.json({
         message: 'Votre requête a bien été reçue, pour la deuxième fois !'
@@ -64,7 +64,7 @@ app.post((req, res, next) => {
 });
 
 //-----------------------
-*/
+
 
 //---------- réponse retourné par le serveur en RECUPERATION / GET
 app.get('/api/Sauces', (req, res, next) => {
