@@ -3,8 +3,7 @@ const sauceControllers = require('../models/sauce');
 //---------- réponse retourné par le serveur en CREATION / POST
 exports.createSauce = (req, res, next) => {
     delete req.body._id;
-    const sauce = new Sauce({
-
+    const sauce = new sauce({
         ...req.body
     });
     sauce.save()
@@ -12,17 +11,12 @@ exports.createSauce = (req, res, next) => {
             message: 'object enregistré'
         }))
         .catch(error => res.status(400).json({
-            errror
+            error
         }));
-    /*
-    console.log(req.body);
-    res.status(201), json({
-        message: 'objet crée)'
-    });*/
 };
 
 exports.updateSauce = ((req, res, next) => {
-    Sauce.updateOne({
+    sauce.updateOne({
             _id: req.params.id
         }, {
             ...req.body,
@@ -38,7 +32,7 @@ exports.updateSauce = ((req, res, next) => {
 
 
 exports.deleteSauce = ((req, res, next) => {
-    Sauce.deleteOne({
+    sauce.deleteOne({
             _id: req.params.id
         })
         .then(() => res.status(200).json({
@@ -50,38 +44,18 @@ exports.deleteSauce = ((req, res, next) => {
 });
 
 exports.getOneSauce = ((req, res, next) => {
-    Sauce.findOne({
+    sauce.findOne({
             _id: req.params.id
         })
-        /*
-        const stuff = [{
-                _id: 'oeihfzeoi',
-                title: 'Mon premier objet',
-                description: 'Les infos de mon premier objet',
-                imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-                price: 4900,
-                userId: 'qsomihvqios',
-            },
-            {
-                _id: 'oeihfzeomoihi',
-                title: 'Mon deuxième objet',
-                description: 'Les infos de mon deuxième objet',
-                imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-                price: 2900,
-                userId: 'qsomihvqios',
-            },
-        ];
-        res.status(200).json(stuff);
-        */
-        .then(Sauces => res.status(200).json(Sauces))
+        .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(400).json({
             error
         }));
 });
 
 exports.getAllSauce = ((req, res, next) => {
-    Sauce.find()
-        .then(Sauces => res.status(200).json(Sauces))
+    sauce.find()
+        .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(400).json({
             error
         }));

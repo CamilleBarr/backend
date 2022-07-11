@@ -1,41 +1,21 @@
 const express = require('express');
 //const app = require('../app');
-//const app = require('../app');
-
 const router = express.Router();
+const auth = require('auth');
+
 const sauceControllers = require('../controllers/sauce');
 
 // //---------- réponse retournée par le serveur en MODIFICATION / MAJ /PUT via le fichier controllers
-router.post('/', sauceControllers.createSauce);
+router.post('/', auth, sauceControllers.createSauce);
 
 //---------- réponse retourné par le serveur en MODIFICATION / MAJ /PUT
-router.put('/:id', sauceControllers.updateSauce);
-
+router.put('/:id',auth, sauceControllers.updateSauce);
 
 //---------- réponse retourné par le serveur en SUPPRESSION / DESTROY
-router.delete('/:id', sauceControllers.deleteSauce);
-
-
-
-/*
-//------------------------
-//Bout de code devenu inutile
-app.post((req, res, next) => {
-    res.json({
-        message: 'Votre requête a bien été reçue, pour la deuxième fois !'
-    });
-    next();
-});
-
-app.post((req, res, next) => {
-    console.log('Réponse envoyée avec succès !');
-});
-
-//-----------------------
-*/
+router.delete('/:id',auth, sauceControllers.deleteSauce);
 
 //---------- réponse retourné par le serveur en RECUPERATION / GET
-router.get('/:id', sauceControllers.getOneSauce);
-router.get('/', sauceControllers.getAllSauce); 
+router.get('/:id', auth, sauceControllers.getOneSauce);
+router.get('/', auth, sauceControllers.getAllSauce); 
 
 module.exports = router;
