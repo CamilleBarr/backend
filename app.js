@@ -2,7 +2,6 @@
 const express = require('express');
 //--------- j'appelle la fonction mongoose
 const mongoose = require('mongoose');
-
 //---- inportation des modèles
 //--------- j'importe le modèle des sauces
 const sauceRoutes = require('./routes/sauce');

@@ -1,4 +1,4 @@
-const sauceControllers = require('../models/sauce');
+const sauce = require('../models/sauce');
 
 //---------- réponse retourné par le serveur en CREATION / POST
 exports.createSauce = (req, res, next) => {
