@@ -8,6 +8,8 @@ const sauceRoutes = require('./routes/sauce');
 //--------- j'importe le modèle d'authentification utilisateur
 const userRoutes = require('./routes/user');
 
+//--------- j'appelle la fonction express
+const app = express();
 //---------- connexion à la base de données MongoDB. Ci-dessous = middleware
 mongoose.connect('mongodb+srv://WebmisstressTest0:WebmisstressTest0@cluster0.ngbkf.mongodb.net/?retryWrites=true&w=majority', {
         useNewUrlParser: true,
@@ -19,13 +21,11 @@ mongoose.connect('mongodb+srv://WebmisstressTest0:WebmisstressTest0@cluster0.ngb
 app.post(express.json());
 app.post((req, res) => {
     res.json({
-        message: 'Votre requête a bien été reçue pour la seconde fois !'
+        message: 'Votre requête a bien été reçue !'
     });
 });
 
 
-//--------- j'appelle la fonction express
-const app = express();
 
 //---------- headers adapté pour les CORS 
 app.use((req, res, next) => {
