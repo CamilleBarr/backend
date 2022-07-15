@@ -35,6 +35,8 @@ app.use((req, res, next) => {
     next();
 });
 
+const path = require('path');
+
 //---------- on enregistre les routes comme ceci :
 app.use('/api/sauce', sauceRoutes);
 app.use('/api/auth', userRoutes);
