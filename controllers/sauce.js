@@ -8,21 +8,61 @@ exports.createSauce = (req, res, next) => {
     const sauce = new Sauce({
         ...sauceObject,
         userId: req.auth.userId,
-        imageUrl:'${req.protocol}://${req.get("host")}/images/${req.file.filename}'
+        imageUrl: '${req.protocol}://${req.get("host")}/images/${req.file.filename}'
     });
 
-    sauce.save()
-        .then(() => {res.status(201).json({
-            message: 'objet enregistré !'
-})})
+    Sauce.save()
+        .then(() => {
+            res.status(201).json({
+                message: 'objet enregistré !'
+            })
+        })
         .catch(error => res.status(400).json({
-            error 
+            error
         }));
 
 };
 
 exports.updateSauce = ((req, res, next) => {
-    sauce.updateOne({
+    const sauceObject = req.file ? {
+        ...JSON.parse(req.body.sauce),
+        imageUrl: '${req.protocol}://${req.get("host")}/images/${req.file.filename}'
+    } : {
+        ...req.body
+    };
+
+    delete sauceObject._userId;
+    Sauce.findOne({
+            _id: req.params.id
+        })
+        .then((sauce) => {
+            if (sauce.userId != req.auth.userId) {
+                res.status(400).json({
+                    message: "Non-autorisé"
+                });
+            } else {
+                Sauce.updateOne({
+                        _id: req.params.id
+                    }, {
+                        ...sauceObject,
+                        _id: req.params.id
+                    })
+                    .then(() => res.status(200).json({
+                        message: "Object modifié"
+                    }))
+                    .catch((error => res.status(401).json({
+                        error
+                    })));
+            }
+        })
+        .catch((error) => {
+            res.status(400).json({
+                error
+            });
+        })
+
+
+    Sauce.updateOne({
             _id: req.params.id
         }, {
             ...req.body,
@@ -38,7 +78,7 @@ exports.updateSauce = ((req, res, next) => {
 
 
 exports.deleteSauce = ((req, res, next) => {
-    sauce.deleteOne({
+    Sauce.deleteOne({
             _id: req.params.id
         })
         .then(() => res.status(200).json({
@@ -50,7 +90,7 @@ exports.deleteSauce = ((req, res, next) => {
 });
 
 exports.getOneSauce = ((req, res, next) => {
-    sauce.findOne({
+    Sauce.findOne({
             _id: req.params.id
         })
         .then(sauce => res.status(200).json(sauce))
@@ -60,7 +100,7 @@ exports.getOneSauce = ((req, res, next) => {
 });
 
 exports.getAllSauce = ((req, res, next) => {
-    sauce.find()
+    Sauce.find()
         .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(400).json({
             error
