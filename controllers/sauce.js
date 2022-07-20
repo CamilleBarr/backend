@@ -1,5 +1,8 @@
 const Sauce = require('../models/sauce');
 const fs = require('fs');
+//const jwt = require('jsonwebtokken');
+//do we have to require app ?
+//const dotenv = require('dotenv').config();
 //---------- réponse retourné par le serveur en CREATION / POST
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
