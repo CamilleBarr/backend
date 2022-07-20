@@ -7,8 +7,8 @@ exports.createSauce = (req, res, next) => {
     delete sauceObject._userId;
     const sauce = new Sauce({
         ...sauceObject,
-        userId: req.auth.userId,
-        imageUrl: '${req.protocol}://${req.get("host")}/images/${req.file.filename}'
+        //userId: req.auth.userId, not necessary since any user can add a sauce to its favorite
+        imageUrl: `{req.protocol}://${req.get("host")}/images/${req.file.filename}`
     });
 
     Sauce.save()
@@ -24,9 +24,10 @@ exports.createSauce = (req, res, next) => {
 };
 
 exports.updateSauce = ((req, res, next) => {
+    // rajouter des conditions.
     const sauceObject = req.file ? {
         ...JSON.parse(req.body.sauce),
-        imageUrl: '${req.protocol}://${req.get("host")}/images/${req.file.filename}'
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
     } : {
         ...req.body
     };
@@ -125,3 +126,5 @@ exports.deleteSauce = ((req, res, next) => {
                     error
                 }));
         });
+
+        //rajouter pour dislike and like
