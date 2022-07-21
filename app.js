@@ -6,18 +6,19 @@ const mongoose = require('mongoose');
 //--------- j'importe le modèle d'authentification utilisateur
 const userRoutes = require('./routes/user');
 //--------- j'importe le modèle des sauces
-const sauceRoutes = require('./routes/sauce');
+const sauceRoutes = require('./routes/sauces');
 
 const path = require('path');
 //--------- j'appelle la fonction express
 const app = express();
 //---------- ajout de sécurité pour les hearders et les variables
+//const helmet = require('helmet'); 
 /* const dotenv = require('dotenv').config(); 
-const helmet = require('helmet'); 
+
 app.use(helmet());
 */
 //---------- connexion à la base de données MongoDB. Ci-dessous = middleware
-mongoose.connect('mongodb+srv://WebmisstressTest0:WebmisstressTest0@cluster0.ngbkf.mongodb.net/?retryWrites=true&w=majority', {
+mongoose.connect(`mongodb+srv://WebmisstressTest0:WebmisstressTest0@cluster0.ngbkf.mongodb.net/?retryWrites=true&w=majority`, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
@@ -46,7 +47,7 @@ app.use((req, res, next) => {
 
 //---------- on enregistre les routes comme ceci :
 app.use('/api/auth', userRoutes);
-app.use('/api/sauce', sauceRoutes);
+app.use('/api/sauces', sauceRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
