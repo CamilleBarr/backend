@@ -24,6 +24,19 @@ mongoose.connect(`mongodb+srv://WebmisstressTest0:WebmisstressTest0@cluster0.ngb
     })
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
+/*
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://WebmisstressTest0:<password>@cluster0.ngbkf.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+client.connect(err => {
+  const collection = client.db("test").collection("devices");
+  // perform actions on the collection object
+  client.close();
+});
+
+*/
+
 /* OPTIONAL FOR PIQUAANTE
 app.post(express.json());
 app.post((req, res) => {

@@ -91,7 +91,7 @@ exports.deleteSauce = ((req, res, next) => {
                                 message: 'non-autorisé'
                             })
                         } else {
-                            const filename = Sauces.imageUrl.split('/images/')[1];
+                            const filename = Sauce.imageUrl.split('/images/')[1];
                             fs.unlink(`images/${filename}`, () => {
                                 Sauce.deleteOne({
                                         _id: req.params.id
