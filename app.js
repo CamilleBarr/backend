@@ -46,6 +46,11 @@ app.post((req, res) => {
 });
 */
 
+app.use((req, res, next) => {
+    res.removeHeader('Cross-Origin-Resource-Policy');
+    next();
+});
+
 app.use(express.json());
 
 //---------- headers adapté pour les CORS 

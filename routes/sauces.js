@@ -16,10 +16,12 @@ router.post('/', auth, multer, sauceControllers.createSauce);
 router.get('/:id', auth, sauceControllers.getOneSauce);
 
 //---------- réponse retourné par le serveur en MODIFICATION / MAJ /PUT
-router.put('/:id',auth, multer, sauceControllers.updateSauce);
+router.put('/:id', auth, multer, sauceControllers.updateSauce);
 
 //---------- réponse retourné par le serveur en SUPPRESSION / DESTROY
-router.delete('/:id',auth, sauceControllers.deleteSauce);
+router.delete('/:id', auth, sauceControllers.deleteSauce);
+//---------- réponse retournée par le serveur en LIKANT ou DISLIKE one sauce
+//router.post('/:id/like', auth, multer, sauceControllers.likingIcon);
 
 
 module.exports = router;
