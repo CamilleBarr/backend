@@ -1,9 +1,9 @@
 const Sauce = require('../models/sauce');
 const fs = require('fs');
-//const jwt = require('jsonwebtokken');
-//do we have to require app ?
-//const dotenv = require('dotenv').config();
+const jwt = require('jsonwebtoken');
 //---------- réponse retourné par le serveur en CREATION / POST
+
+
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.Sauce);
     delete sauceObject._id;
@@ -11,13 +11,17 @@ exports.createSauce = (req, res, next) => {
     const Sauce = new Sauce({
         ...sauceObject,
         //userId: req.auth.userId, not necessary since any user can add a sauce to its favorite
-        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+        likes : 0,
+        dislikes : 0,
+        usersLiked : [" "], 
+        usersDisliked : [" "], 
     });
 
     Sauce.save()
         .then(() => {
             res.status(201).json({
-                message: 'objet enregistré !'
+                message: 'sauce enregistré !'
             })
         })
         .catch(error => res.status(400).json({
@@ -26,8 +30,10 @@ exports.createSauce = (req, res, next) => {
 
 };
 
+
 exports.updateSauce = ((req, res, next) => {
     // rajouter des conditions.
+
     const sauceObject = req.file ? {
         ...JSON.parse(req.body.Sauce),
         imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
@@ -35,7 +41,6 @@ exports.updateSauce = ((req, res, next) => {
         ...req.body
     };
 
-    delete sauceObject._userId;
     Sauce.findOne({
             _id: req.params.id
         })
@@ -80,54 +85,59 @@ exports.updateSauce = ((req, res, next) => {
         }));
 });
 
+exports.getOneSauce = ((req, res, next) => {
+    Sauce.findOne({
+            _id: req.params.id
+        })
+        .then(Sauce => res.status(200).json(Sauce))
+        .catch(error => res.status(400).json({
+            error
+        }));
+});
+
+exports.getAllSauce = ((req, res, next) => {
+    Sauce.find()
+        .then(Sauce => res.status(200).json(Sauce))
+        .catch(error => res.status(400).json({
+            error
+        }));
+});
+
 
 exports.deleteSauce = ((req, res, next) => {
-            Sauce.findOne({
-                    _id: req.params.id
+    Sauce.findOne({
+            _id: req.params.id
+        })
+        .then(Sauce => {
+            if (Sauce.userId != req.auth.userId) {
+                res.status(401).json({
+                    message: 'non-autorisé'
                 })
-                .then(Sauce => {
-                        if (Sauce.userId != req.auth.userId) {
-                            res.status(401).json({
-                                message: 'non-autorisé'
+            } else {
+                const filename = Sauce.imageUrl.split('/images/')[1];
+                fs.unlink(`images/${filename}`, () => {
+                    Sauce.deleteOne({
+                            _id: req.params.id
+                        })
+                        .then(() => {
+                            res.status(200).json({
+                                message: "Object supprimé"
                             })
-                        } else {
-                            const filename = Sauce.imageUrl.split('/images/')[1];
-                            fs.unlink(`images/${filename}`, () => {
-                                Sauce.deleteOne({
-                                        _id: req.params.id
-                                    })
-                                    .then(() => {
-                                        res.status(200).json({
-                                            message:"Object supprimé"
-                                        })
-                                    })
-                                    .catch(error => res.status(401).json({error}));
-                            })
-
-                        }
-                    })
-
-                .catch(error => res.status(500).json({
-                    error
-                }));
-            });
-
-        exports.getOneSauce = ((req, res, next) => {
-            Sauce.findOne({
-                    _id: req.params.id
+                        })
+                        .catch(error => res.status(401).json({
+                            error
+                        }));
                 })
-                .then(Sauce => res.status(200).json(Sauce))
-                .catch(error => res.status(400).json({
-                    error
-                }));
-        });
 
-        exports.getAllSauce = ((req, res, next) => {
-            Sauce.find()
-                .then(Sauce => res.status(200).json(Sauce))
-                .catch(error => res.status(400).json({
-                    error
-                }));
-        });
+            }
+        })
 
-        //rajouter pour dislike and like
+        .catch(error => res.status(500).json({
+            error
+        }));
+});
+
+
+
+
+//rajouter pour dislike and like

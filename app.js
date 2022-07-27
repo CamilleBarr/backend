@@ -9,50 +9,33 @@ const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauces');
 
 const path = require('path');
+
+// importation de body parser
+
+const bodyParser = require('body-parser');
 //--------- j'appelle la fonction express
 const app = express();
 //---------- ajout de sécurité pour les hearders et les variables
-//const helmet = require('helmet'); 
-/* const dotenv = require('dotenv').config(); 
 
-app.use(helmet());
-*/
+const dotenv = require('dotenv').config();
+
+
 //---------- connexion à la base de données MongoDB. Ci-dessous = middleware
-mongoose.connect(`mongodb+srv://WebmisstressTest0:WebmisstressTest0@cluster0.ngbkf.mongodb.net/?retryWrites=true&w=majority`, {
+mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
-/*
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://WebmisstressTest0:<password>@cluster0.ngbkf.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
-});
+//permet de gerer les problèmes de CORS quand front et back ne sont pas sur le même serveur
 
-*/
-
-/* OPTIONAL FOR PIQUAANTE
-app.post(express.json());
-app.post((req, res) => {
-    res.json({
-        message: 'Votre requête a bien été reçue !'
-    });
-});
-*/
-
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
     res.removeHeader('Cross-Origin-Resource-Policy');
     next();
-});
+});*/
 
 app.use(express.json());
-
 //---------- headers adapté pour les CORS 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -62,10 +45,12 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(bodyParser.json());
+// transform body req in usable json
 
 //---------- on enregistre les routes comme ceci :
-app.use('/api/auth', userRoutes);
-app.use('/api/sauces', sauceRoutes);
-app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use("/api/auth", userRoutes);
+app.use("/api/sauces", sauceRoutes);
+app.use("/images", express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
