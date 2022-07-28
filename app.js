@@ -39,7 +39,7 @@ app.use(express.json());
 //---------- headers adapté pour les CORS 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    //res.setHeader('Cross-Origin-Resource-Policy', 'same-site'); ajout securité
+    res.setHeader('Cross-Origin-Resource-Policy', 'same-site'); 
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
@@ -47,6 +47,8 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 // transform body req in usable json
+
+
 
 //---------- on enregistre les routes comme ceci :
 app.use("/api/auth", userRoutes);

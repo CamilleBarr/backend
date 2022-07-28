@@ -1,33 +1,27 @@
 const bcrypt = require('bcrypt');
-const User = require('../models/user');
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
-const emailValidator = require('email-validator');
-const passwordValidator = require('password-validator');
+//let emailValidator = require('email-validator');
+//emailValidator.validate("test@email.com");
+const regex = ('^[a-zA-Z.-_]{3,30}[@]{1}[a-zA-Z.-_]{3,30}[.]{1}[a-z]{2}[^0-9]$');
+//const passwordValidator = require('password-validator');
+
 //const cryptJs = require('crypto-js'); 
-
-var schemaPassword = new passwordValidator();
-
-// Add properties to it
-schemaPassword
-    .is().min(8) // Minimum length 8
-    .is().max(25) // Maximum length 25
-    .has().uppercase(1) // Must have uppercase letters
-    .has().lowercase(1) // Must have lowercase letters
-    .has().digits(2) // Must have at least 2 digits
-    .has().not().spaces() // Should not have spaces
-    .is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist these values
 
 
 
 //---------- inscription avec mot de passe sécurisé et class user / async
 exports.signup = (req, res, next) => {
-    //console.log("req.body", req.body);
-    if (emailValidator.validate(req.body.email) != req.body.email) {
+   /*
+    if (emailValidator.validate(req.body.email) = (req.body.email)) {
         throw "email address invalid"
-    } else if (!schemaPassword.validate(req.body.password)) {
-        throw "password invalid. Must contain between 8 to 25 characters, capital and lower letters, with 2 numbers at least "
-    } else {
+        
+    } else 
+    if (schemaPassword.validate((req.body.password) != (req.body.password))) {
+        return "password invalid. Must contain between 8 to 25 characters, capital and lower letters, with 2 numbers at least "
+    } else {*/
+        
         bcrypt.hash(req.body.password, 10)
             .then(hash => {
                 const user = new User({
@@ -45,7 +39,7 @@ exports.signup = (req, res, next) => {
             .catch(error => res.status(500).json({
                 error
             }.send(console.log(error))));
-        }
+        //}
 };
 //console.log(req.body);
 

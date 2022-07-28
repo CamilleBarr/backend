@@ -1,4 +1,4 @@
-const Sauce = require('../models/sauce');
+const Sauce = require('../models/Sauce');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 //---------- réponse retourné par le serveur en CREATION / POST
@@ -31,7 +31,7 @@ exports.createSauce = (req, res, next) => {
 };
 
 
-exports.updateSauce = ((req, res, next) => {
+exports.updateSauce = (req, res, next) => {
     // rajouter des conditions.
 
     const sauceObject = req.file ? {
@@ -83,9 +83,9 @@ exports.updateSauce = ((req, res, next) => {
         .catch(error => res.status(400).json({
             error
         }));
-});
+};
 
-exports.getOneSauce = ((req, res, next) => {
+exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({
             _id: req.params.id
         })
@@ -93,18 +93,18 @@ exports.getOneSauce = ((req, res, next) => {
         .catch(error => res.status(400).json({
             error
         }));
-});
+};
 
-exports.getAllSauce = ((req, res, next) => {
+exports.getAllSauce = (req, res, next) => {
     Sauce.find()
         .then(Sauce => res.status(200).json(Sauce))
         .catch(error => res.status(400).json({
             error
         }));
-});
+};
 
 
-exports.deleteSauce = ((req, res, next) => {
+exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({
             _id: req.params.id
         })
@@ -135,9 +135,12 @@ exports.deleteSauce = ((req, res, next) => {
         .catch(error => res.status(500).json({
             error
         }));
-});
+};
 
 
+exports.checkSauce = (req, res, next) => {
+
+}
 
 
 //rajouter pour dislike and like
