@@ -2,7 +2,7 @@ const validator = require("validator"); // Importation du package 'validator'
 
 // EXPORTS
 // VERIFICATION DE L'ADRESSE MAIL : Middleware de vérification de l'adresse mail
-module.exports = function (req, res, next) {
+module.exports = (req, res, next) => {
     
 console.log("test" );
   // Si l'adresse mail n'est pas valide

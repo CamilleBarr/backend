@@ -38,7 +38,8 @@ exports.signup = (req, res, next) => {
             })
             .catch(error => res.status(500).json({
                 error
-            }.send(console.log(error))));
+            }
+            .send(console.log(error))));
         //}
 };
 //console.log(req.body);

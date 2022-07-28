@@ -15,9 +15,10 @@ schemaPassword
 
 // EXPORTS
 // VERIFICATION DU MOT DE PASSE : Middleware de vérification de la qualité du mot de passe par rapport au schéma
-module.exports = function (req, res, next) {
+module.exports = (req, res, next) => {
   // Si le mot de passe n'est pas validé
-  if (!passwordSchema.validate(req.body.password)) {
+  console.log("test console pwd req:", req.body.password)
+  if (!schemaPassword.validate(req.body.password)) {
     return res.status(400).json({
       message:
         "Le mot de passe doit contenir entre 8 et 15 caractères, avec au moins une majuscule et un chiffre !",
