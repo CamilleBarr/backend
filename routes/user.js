@@ -5,9 +5,6 @@ const userController = require('../controllers/user');
 const email = require ('../middleware/email');
 const password = require('../middleware/password');
 
-
-console.log("userController:", userController.signup);
-
 const router = express.Router();
 //route post parce que frontend envoie aussi des info : address mail and passwords
 

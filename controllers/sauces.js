@@ -1,27 +1,35 @@
 const Sauce = require('../models/Sauce');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
+const {
+    findOne
+} = require('../models/Sauce');
+/*
+const {
+    STATUS_CODES
+} = require('http');*/
 //---------- réponse retourné par le serveur en CREATION / POST
 
-
 exports.createSauce = (req, res, next) => {
+    console.log("console log create sauce req :", req.body.Sauce);
     const sauceObject = JSON.parse(req.body.Sauce);
     delete sauceObject._id;
-    delete sauceObject._userId;
+    //delete sauceObject._userId;
     const Sauce = new Sauce({
         ...sauceObject,
         //userId: req.auth.userId, not necessary since any user can add a sauce to its favorite
         imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
-        likes : 0,
-        dislikes : 0,
-        usersLiked : [" "], 
-        usersDisliked : [" "], 
+        likes: 0,
+        dislikes: 0,
+        usersLiked: [" "],
+        usersDisliked: [" "],
+
     });
 
     Sauce.save()
         .then(() => {
             res.status(201).json({
-                message: 'sauce enregistré !'
+                message: 'sauce enregistrée !'
             })
         })
         .catch(error => res.status(400).json({
@@ -29,7 +37,6 @@ exports.createSauce = (req, res, next) => {
         }));
 
 };
-
 
 exports.updateSauce = (req, res, next) => {
     // rajouter des conditions.
@@ -70,7 +77,6 @@ exports.updateSauce = (req, res, next) => {
             });
         })
 
-
     Sauce.updateOne({
             _id: req.params.id
         }, {
@@ -103,7 +109,6 @@ exports.getAllSauce = (req, res, next) => {
         }));
 };
 
-
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({
             _id: req.params.id
@@ -128,7 +133,6 @@ exports.deleteSauce = (req, res, next) => {
                             error
                         }));
                 })
-
             }
         })
 
@@ -139,8 +143,81 @@ exports.deleteSauce = (req, res, next) => {
 
 
 exports.checkSauce = (req, res, next) => {
+    const like = req.body.like;
+    const dislike = req.body.dislike;
+    const usersLiked = req.body.usersLiked;
+    const usersDisliked = req.body.usersDisliked;
+    const userId = req.body.userId;
+    const sauceObject = JSON.parse(req.body.Sauce);
+    // on one sauce
+    Sauce.findOne({
+            _id: req.params.id
+        })
+        .then(Sauce => {
+            // check if the user has already liked or disliked the sauce
+            let userLike = Sauce.usersLiked.find((id) => id === userId);
+            let userDislike = Sauce.usersDisliked.find((id) => id === userId);
+            switch (like) {
+                case 1: {
 
+                    if (!userLike && !userDislike) {
+                        {
+                            Sauce.likes += 1
+                            Sauce.userLiked.push(userId)
+                            Sauce.save()
+                                .then(() => res.status(201).json({
+                                    message: 'La sauce est ajoutée à vos favoris'
+                                }))
+                                .catch((error) => res.status(400).json({
+                                    error
+                                }));
+                        }
+                    }
+                    if (!Sauce.userLiked.includes(userId) && Sauce.userDisliked.includes(userId)) {
+                        {
+                            $inc: {
+                                likes: 1
+                            }
+                            $inc: {
+                                dislikes: -1
+                            }
+                            $push: {
+                                usersLiked: req.body.userId
+                            }
+                            $pop: {
+                                usersDisliked: req.body.userId
+                            }
+                            Sauce.save()
+                            .then(() => res.status(201).json({
+                                message: 'La sauce est ajoutée à vos favoris'
+                            }))
+                            .catch(() => res.status(400).json({
+                                error
+                            }));
+                        }
+                    }
+                    if (userLike) {
+                        Sauce.save
+                            .then(() => res.status(201).json({
+                                message: "Cette sauce est déjà dans vos favoris"
+                            }))
+                            .catch(() => res.status(400).json({
+                                error
+                            }));
+                    }
+                }
+
+                case 0: {
+
+                }
+
+                case -1: {
+
+                }
+
+            }
+        })
+        .catch(error => res.status(500).json({
+            error
+        }));
 }
-
-
-//rajouter pour dislike and like

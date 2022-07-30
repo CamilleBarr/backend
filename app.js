@@ -45,9 +45,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(bodyParser.json());
-// transform body req in usable json
 
+// transform body req in usable json
+app.use(bodyParser.json());
 
 
 //---------- on enregistre les routes comme ceci :
