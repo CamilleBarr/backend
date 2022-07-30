@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
 //let emailValidator = require('email-validator');
 //emailValidator.validate("test@email.com");
-const regex = ('^[a-zA-Z.-_]{3,30}[@]{1}[a-zA-Z.-_]{3,30}[.]{1}[a-z]{2}[^0-9]$');
+//const regex = ('^[a-zA-Z.-_]{3,30}[@]{1}[a-zA-Z.-_]{3,30}[.]{1}[a-z]{2}[^0-9]$');
 //const passwordValidator = require('password-validator');
 
 //const cryptJs = require('crypto-js'); 

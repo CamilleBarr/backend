@@ -1,10 +1,10 @@
 const Sauce = require('../models/Sauce');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
-const {
+/*const {
     findOne
 } = require('../models/Sauce');
-/*
+
 const {
     STATUS_CODES
 } = require('http');*/
