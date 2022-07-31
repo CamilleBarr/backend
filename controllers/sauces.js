@@ -159,7 +159,6 @@ exports.checkSauce = (req, res, next) => {
             let userDislike = Sauce.usersDisliked.find((id) => id === userId);
             switch (like) {
                 case 1: {
-
                     if (!userLike && !userDislike) {
                         {
                             Sauce.likes += 1
@@ -173,47 +172,64 @@ exports.checkSauce = (req, res, next) => {
                                 }));
                         }
                     }
-                    if (!Sauce.userLiked.includes(userId) && Sauce.userDisliked.includes(userId)) {
-                        {
-                            $inc: {
-                                likes: 1
-                            }
-                            $inc: {
-                                dislikes: -1
-                            }
-                            $push: {
-                                usersLiked: req.body.userId
-                            }
-                            $pop: {
-                                usersDisliked: req.body.userId
-                            }
-                            Sauce.save()
-                            .then(() => res.status(201).json({
-                                message: 'La sauce est ajoutée à vos favoris'
-                            }))
-                            .catch(() => res.status(400).json({
-                                error
-                            }));
-                        }
-                    }
+
                     if (userLike) {
-                        Sauce.save
+                        res.status(201).json({
+                            message: "Cette sauce est déjà dans vos favoris"
+                        })
+                    }
+                }
+                break;
+
+            case 0: {
+                if (userLike && !userDislike) {
+                    {
+                        Sauce.likes -= 1
+                        Sauce.userLiked.pop(userId)
+                        Sauce.save()
                             .then(() => res.status(201).json({
-                                message: "Cette sauce est déjà dans vos favoris"
+                                message: 'La sauce est retirée de vos favoris'
                             }))
-                            .catch(() => res.status(400).json({
+                            .catch((error) => res.status(400).json({
                                 error
                             }));
                     }
                 }
-
-                case 0: {
-
+                if (!userLike && userDislike) {
+                    {
+                        Sauce.dislikes -= 1
+                        Sauce.userDisliked.pop(userId)
+                        Sauce.save()
+                            .then(() => res.status(201).json({
+                                message: 'La sauce ne fait plus partie de votre liste noire'
+                            }))
+                            .catch((error) => res.status(400).json({
+                                error
+                            }));
+                    }
                 }
-
-                case -1: {
-
+            }
+            break;
+            case -1: {
+                if (!userLike && !userDislike) {
+                    {
+                        Sauce.dislikes += 1
+                        Sauce.userDisliked.push(userId)
+                        Sauce.save()
+                            .then(() => res.status(201).json({
+                                message: "La sauce n'est pas votre favorite"
+                            }))
+                            .catch((error) => res.status(400).json({
+                                error
+                            }));
+                    }
                 }
+                if (userDislike) {
+                    res.status(201).json({
+                        message: "Cette sauce a déjà été défavorisée"
+                    })
+                }
+            }
 
             }
         })
