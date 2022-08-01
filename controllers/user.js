@@ -3,7 +3,6 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
 //let emailValidator = require('email-validator');
-//emailValidator.validate("test@email.com");
 //const regex = ('^[a-zA-Z.-_]{3,30}[@]{1}[a-zA-Z.-_]{3,30}[.]{1}[a-z]{2}[^0-9]$');
 //const passwordValidator = require('password-validator');
 
@@ -13,6 +12,8 @@ const dotenv = require('dotenv').config();
 
 //---------- inscription avec mot de passe sécurisé et class user / async
 exports.signup = (req, res, next) => {
+    
+console.log("success in signing up : ", req.body.email);
    /*
     if (emailValidator.validate(req.body.email) = (req.body.email)) {
         throw "email address invalid"
@@ -41,6 +42,7 @@ exports.signup = (req, res, next) => {
             }
             //.send(console.log(error))
             ));
+            
         //}
 };
 //console.log(req.body);
@@ -48,6 +50,7 @@ exports.signup = (req, res, next) => {
 //---------- connexion à la plateforme avec vérification compte existant et verification password
 // avec gestion d'erreur d'exécution de la requete au serveur, err verif mot de passe, err user not exist
 exports.login = (req, res, next) => {
+    console.log("success in loging up : ", req.body.email);
     User.findOne({
             email: req.body.email
         })
@@ -76,7 +79,7 @@ exports.login = (req, res, next) => {
                             });
                         }
                     })
-                    console.log("success in signing up : ", true)
+                    
                     .catch(error => {
                         res.status(500).json({
                             error
@@ -87,6 +90,7 @@ exports.login = (req, res, next) => {
         .catch(error => {
             res.status(500).json({
                 error
-            });
-        })
+            })
+        });
+        
 };
