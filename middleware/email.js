@@ -1,5 +1,5 @@
 const validator = require("email-validator"); // Importation du package 'validator'
-
+const dotenv = require("dotenv").config();
 // EXPORTS
 // VERIFICATION DE L'ADRESSE MAIL : Middleware de vérification de l'adresse mail
 module.exports = (req, res, next) => {

@@ -1,5 +1,5 @@
 const passwordValidator = require("password-validator"); // Importation du package 'password-validator'
-
+const dotenv = require("dotenv").config();
 // Création du schéma
 var schemaPassword = new passwordValidator();
 
