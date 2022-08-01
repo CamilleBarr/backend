@@ -17,7 +17,7 @@ schemaPassword
 // VERIFICATION DU MOT DE PASSE : Middleware de vérification de la qualité du mot de passe par rapport au schéma
 module.exports = (req, res, next) => {
   // Si le mot de passe n'est pas validé
-  console.log("test console pwd req:", req.body.password)
+  console.log("test console pwd req:", req.body.password);
   if (!schemaPassword.validate(req.body.password)) {
     return res.status(400).json({
       message:
