@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
     
 console.log("test" );
   // Si l'adresse mail n'est pas valide
-  if (!validator.isEmail(req.body.email)) {
+  if (!validator.validate(req.body.email)) {
     console.log("test 2");
     return res
       .status(400)

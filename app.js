@@ -33,19 +33,19 @@ mongoose
 
 //permet de gerer les problèmes de CORS quand front et back ne sont pas sur le même serveur
 
-/*app.use((req, res, next) => {
+app.use((req, res, next) => {
     res.removeHeader('Cross-Origin-Resource-Policy');
     next();
-});*/
+});
 
 app.use(express.json());
 //---------- headers adapté pour les CORS 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Cross-Origin-Resource-Policy', 'same-site'); 
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    //(cors({ origin: true, credentials: true }));
     next();
 });
 
