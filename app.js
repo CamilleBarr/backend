@@ -12,16 +12,19 @@ const path = require('path');
 
 // importation de body parser
 
-const bodyParser = require('body-parser');
+//const bodyParser = require('body-parser');
 //--------- j'appelle la fonction express
 const app = express();
 //---------- ajout de sécurité pour les hearders et les variables
 
 const dotenv = require('dotenv').config();
+const helmet = require('helmet');
+app.use(helmet());
 
 
 //---------- connexion à la base de données MongoDB. Ci-dessous = middleware
-mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {
+mongoose
+    .connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
@@ -42,12 +45,13 @@ app.use((req, res, next) => {
     res.setHeader('Cross-Origin-Resource-Policy', 'same-site'); 
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    //(cors({ origin: true, credentials: true }));
     next();
 });
 
 
 // transform body req in usable json
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 
 
 //---------- on enregistre les routes comme ceci :
