@@ -21,7 +21,7 @@ router.put('/:id', auth, multer, sauceControllers.updateSauce);
 //---------- réponse retourné par le serveur en SUPPRESSION / DESTROY
 router.delete('/:id', auth, sauceControllers.deleteSauce);
 //---------- réponse retournée par le serveur en LIKANT ou DISLIKE one sauce
-//router.post('/:id/like', auth, multer, sauceControllers.likingIcon);
+router.post('/:id/like', auth, multer, sauceControllers.checkSauce);
 
 
 module.exports = router;
