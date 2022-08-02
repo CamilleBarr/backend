@@ -29,10 +29,8 @@ exports.signup = (req, res, next) => {
         .catch(error => res.status(500).json({
                 error
             }
-            //.send(console.log(error))
         ));
 
-    //}
 };
 
 //---------- connexion à la plateforme avec vérification compte existant et verification password
@@ -44,15 +42,21 @@ exports.login = (req, res, next) => {
 
     User.findOne({
             email: req.body.email
+            
         })
         .then(user => {
-            if (user === null) {
+            console.log("user :", user.password);
+            console.log("$2b$10$eReGhiP7hreRJPQUbB7kWOquR0SKlbyAzIBDQJaQ9B8vA9MNvGNS6");
+            if (!user) {
                 res.status(401).json({
-                    message: "Paire identifiant/mot de passe incorrecte"
+                    message: "Account not registered"
                 })
             } else {
+                console.log("user 2:", user.password);
+                console.log(req.body.password);
                 bcrypt.compare(req.body.password, user.password)
                     .then(valid => {
+                        console.log("valid", valid)
                         if (!valid) {
                             res.status(401).json({
                                 message: "Paire identifiant/mot de passe incorrecte"
