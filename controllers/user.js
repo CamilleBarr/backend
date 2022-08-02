@@ -13,7 +13,8 @@ const dotenv = require('dotenv').config();
 //---------- inscription avec mot de passe sécurisé et class user / async
 exports.signup = (req, res, next) => {
     
-console.log("success in signing up : ", req.body.email);
+console.log("email signing up : ", req.body.email);
+console.log("pwd in signing up: ", req.body.password);
    /*
     if (emailValidator.validate(req.body.email) = (req.body.email)) {
         throw "email address invalid"
@@ -45,12 +46,13 @@ console.log("success in signing up : ", req.body.email);
             
         //}
 };
-//console.log(req.body);
 
 //---------- connexion à la plateforme avec vérification compte existant et verification password
 // avec gestion d'erreur d'exécution de la requete au serveur, err verif mot de passe, err user not exist
 exports.login = (req, res, next) => {
-    console.log("success in loging up : ", req.body.email);
+    
+console.log("email loging up : ", req.body.email);
+console.log("pwd in loging up: ", req.body.password);
     User.findOne({
             email: req.body.email
         })
@@ -72,7 +74,7 @@ exports.login = (req, res, next) => {
                                 token: jwt.sign({
                                         userId: user._id
                                     },
-                                    process.env.RANDOM_TOKEN_SECRET, {
+                                    process.env.TOKEN_SECRET,{ 
                                         expiresIn: '24h'
                                     }
                                 )
@@ -81,6 +83,7 @@ exports.login = (req, res, next) => {
                     })
                     
                     .catch(error => {
+                        console.log ("hash crypt compare has fail with :", error.message);
                         res.status(500).json({
                             error
                         });
@@ -88,6 +91,7 @@ exports.login = (req, res, next) => {
             }
         })
         .catch(error => {
+            console.log ("mongoDB fetch  has fail with :", error.message);
             res.status(500).json({
                 error
             })
