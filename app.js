@@ -12,7 +12,7 @@ const path = require('path');
 
 // importation de body parser
 
-//const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 //--------- j'appelle la fonction express
 const app = express();
 //---------- ajout de sécurité pour les hearders et les variables
@@ -51,7 +51,7 @@ app.use((req, res, next) => {
 
 
 // transform body req in usable json
-//app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 
 //---------- on enregistre les routes comme ceci :

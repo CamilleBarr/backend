@@ -1,6 +1,9 @@
 const Sauce = require('../models/Sauce');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
+const User = require ('../models/User');
+const dotenv = require("dotenv").config();
+
 /*const {
     findOne
 } = require('../models/Sauce');
@@ -11,11 +14,12 @@ const {
 //---------- réponse retourné par le serveur en CREATION / POST
 
 exports.createSauce = (req, res, next) => {
-    console.log("console log create sauce req :", req.body.Sauce);
-    const sauceObject = JSON.parse(req.body.Sauce);
+    console.log("console log create sauce req 1:");
+    const sauceObject = JSON.parse(req.body.sauce);
+    console.log("console log create sauce req 2:");
     delete sauceObject._id;
     //delete sauceObject._userId;
-    const Sauce = new Sauce({
+    const newSauce = new Sauce({
         ...sauceObject,
         //userId: req.auth.userId, not necessary since any user can add a sauce to its favorite
         imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
@@ -24,12 +28,14 @@ exports.createSauce = (req, res, next) => {
         usersLiked: [" "],
         usersDisliked: [" "],
 
-    });
+        
+    });console.log("console log create sauce req 3:", req.newSauce);
 
-    Sauce.save()
+    newSauce.save()
         .then(() => {
+            console.log("req.body:", req.body.sauce)
             res.status(201).json({
-                message: 'sauce enregistrée !'
+                message: "sauce enregistrée !"
             })
         })
         .catch(error => res.status(400).json({
